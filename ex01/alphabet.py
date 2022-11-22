@@ -2,9 +2,9 @@ import random
 import datetime
 import string
 
-taishoumozisuu = 10
-kessonkosuu = 2
-kaitousuu = 3
+taishoumozisuu = 10 #max26
+kessonkosuu = 2 #max25
+kaitousuu = 3 
 
 def shutudai():
     alphabets = list(string.ascii_uppercase)
@@ -55,9 +55,13 @@ def kaitou(kessonmozi):
 
 if __name__ == "__main__":
 
+    st = datetime.datetime.now()
     for _ in range(kaitousuu):
         aaa = shutudai()
         hoge = kaitou(aaa)
         if hoge == "Finish":
             print("おめでとうございます")
+            end = datetime.datetime.now()
+            print(F"所要時間は{(end-st).seconds:2f}秒です")
             break
+    
