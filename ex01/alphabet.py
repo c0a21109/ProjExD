@@ -1,19 +1,21 @@
 import random 
-import datetime
+import time
 import string
 
-taishoumozisuu = 10 #max26
-kessonkosuu = 2 #max25
-kaitousuu = 3 
+TaishouMozisuu = 10 #max26
+Kessonkosuu = 2 #max25
+Kaitousuu = 2
 
 def shutudai():
     alphabets = list(string.ascii_uppercase)
-    mondai = random.sample(alphabets, taishoumozisuu)
+    
+    mondai = random.sample(alphabets, TaishouMozisuu)
     print("対象文字", end = " ")
     for i in mondai:
         print(i, end = " ")
     print()
-    kessonmozi = random.sample(mondai,kessonkosuu)
+    kessonmozi = random.sample(mondai,Kessonkosuu)
+
     for i in kessonmozi:
         mondai.remove(i)
     print("表示文字", end = " ")
@@ -40,12 +42,11 @@ def kaitou(kessonmozi):
 
             else:
                 print("不正解です。またチャレンジしてください")
-                print("-----------------------------------")
+                print("-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-")
                 break
             
             if len(kesson1) == 0:
                 return "Finish"
-                break
 
     else:
         print("不正解です。またチャレンジしてください")
@@ -55,13 +56,14 @@ def kaitou(kessonmozi):
 
 if __name__ == "__main__":
 
-    st = datetime.datetime.now()
-    for _ in range(kaitousuu):
+    st = time.time()
+
+    for _ in range(Kaitousuu):
         aaa = shutudai()
         hoge = kaitou(aaa)
         if hoge == "Finish":
             print("おめでとうございます")
-            end = datetime.datetime.now()
-            print(F"所要時間は{(end-st).seconds:2f}秒です")
+            end = time.time()
+            print(F"所要時間は{(end-st):2f}秒です")
             break
     
