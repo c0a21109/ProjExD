@@ -13,16 +13,34 @@ root = tk.Tk()
 root.title("計算機の見た目")
 root.geometry("300x500")
 
-#問題4
+#問題４
 entry = tk.Entry(root, justify="right", width=10, font=("", 40))
 entry.grid(row=0, column=0, columnspan=3)
 
-#練習2
-for i in range(0, 10):
+#練習２
+for i in range(10):
     button = str(i)
-    #問題２　button = tk.Button(root, text=f"{i}", width=4, height=2, font=("", 30))
     button = tk.Button(root, text=f"{i}", width=4, height=2, font=("", 30))
+    #練習３
     button.bind("<1>", button_click)
-    button.grid(row=(9-i)//3 + 1, column=(9-i)%3)
+    if i == 0:
+        button.grid(row=4, column=0)
+    else:
+        button.grid(row=(9-i)//3 + 1, column=(i-1)%3)
+
+#問題５
+count = 9
+ks = ["+"]
+for i in ks:
+    count += 1
+    button_ks = i
+    button_ks = tk.Button(root, text=f"{i}", width=4, height=2, font=("", 30))
+    button_ks.bind("<1>", button_click)
+    button_ks.grid(row=count//3 + 1, column=count%3)
+
+button_equal = "="
+button_equal = tk.Button(root, text="=", width=4, height=2, font=("", 30))
+button_equal.bind("<1>", button_click)
+button_equal.grid(row=4, column=2)
 
 root.mainloop()
