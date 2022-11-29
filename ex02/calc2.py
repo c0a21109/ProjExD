@@ -12,7 +12,7 @@ def ap(ev):#四則演算を入力する
     txt = btn["text"]
     """"
     if checker.isdecimal() == True:
-        tkm.showwarning("ぴえん", f"[{txt}]は２回連続で使えないよぅ")
+        tkm.showwarning("ぴえん", f"[{txt}]は２回連続で使えないよ")
     else:
         entry.insert(tk.END, F"{txt}")
     """""
@@ -30,7 +30,7 @@ root.title("計算機の見た目")
 root.geometry("400x600")
 
 
-entry = tk.Entry(root, justify="right", width=10, font=("", 40))
+entry = tk.Entry(root, justify="right", width=15, font=("", 40))
 entry.grid(row=0, column=0, columnspan=4)
 
 for i in range(10):#数字ボタンを設置
@@ -43,7 +43,7 @@ for i in range(10):#数字ボタンを設置
         button.grid(row=(9-i)//3 + 3, column=(i+5)%3)
 
 count = 1
-ks = ["/", "*","-","+"]
+ks = ["/", "*", "-", "+"]
 for i in ks:#四則演算の記号を設置
     count += 1
     button_ks = i
