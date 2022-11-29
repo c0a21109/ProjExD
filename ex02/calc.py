@@ -13,12 +13,16 @@ root = tk.Tk()
 root.title("計算機の見た目")
 root.geometry("300x500")
 
+#問題4
+entry = tk.Entry(root, justify="right", width=10, font=("", 40))
+entry.grid(row=0, column=0, columnspan=3)
+
 #練習2
 for i in range(0, 10):
     button = str(i)
     #問題２　button = tk.Button(root, text=f"{i}", width=4, height=2, font=("", 30))
     button = tk.Button(root, text=f"{i}", width=4, height=2, font=("", 30))
     button.bind("<1>", button_click)
-    button.grid(row=(9-i)//3, column=(9-i)%3)
+    button.grid(row=(9-i)//3 + 1, column=(9-i)%3)
 
 root.mainloop()
