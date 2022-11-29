@@ -6,8 +6,14 @@ def button_click(ev):
     btn = ev.widget
     txt = btn["text"]
     #練習３　tkm.showinfo(txt, f"[{txt}]button clicked")
+    #練習７
+    if txt == "=":
+        fm = entry.get()
+        entry.insert(tk.END, F"{txt}")
+        entry.insert(tk.END, F"{eval(fm)}")
     #練習６
-    entry.insert(tk.END, F"{txt}")
+    else:
+        entry.insert(tk.END, F"{txt}")
 
 
 #練習１
