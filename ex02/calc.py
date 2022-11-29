@@ -5,13 +5,16 @@ import tkinter.messagebox as tkm
 def button_click(ev):
     btn = ev.widget
     txt = btn["text"]
-    tkm.showinfo(txt, f"[{txt}]button clicked")
+    #練習３　tkm.showinfo(txt, f"[{txt}]button clicked")
+    #練習６
+    entry.insert(tk.END, F"{txt}")
 
 
 #練習１
 root = tk.Tk()
 root.title("計算機の見た目")
 root.geometry("300x500")
+
 
 #問題４
 entry = tk.Entry(root, justify="right", width=10, font=("", 40))
