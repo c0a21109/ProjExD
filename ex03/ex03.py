@@ -12,44 +12,65 @@ def key_release(event):
     key = ""
 
 def main_proc():
-    global mx, my
+    global mx, my, image
+    fly = False
+
+    if key == "space":
+        if fly == True:
+            fly = False
+            image = tk.PhotoImage(file="fig/0.png")
+        else:
+            fly = True
+            image = tk.PhotoImage(file="fig/3.png")
+
+    #壁の上に乗れないようにする
     if key == "Up":
-        if maze_list[mx][my-1] == 0:
-            my -=1
+        if fly == True or maze_list[mx][my-1] == 0:
+            my -= 1
         else:
             pass
+
     if key == "Down":
-        if maze_list[mx][my+1] == 0:
-            my +=1
+        if fly == True or maze_list[mx][my+1] == 0:
+            my += 1
         else:
             pass
+
     if key == "Left":
-        if maze_list[mx-1][my] == 0:
+        if fly == True or maze_list[mx-1][my] == 0:
             mx -= 1
         else:
             pass
     if key == "Right":
-        if maze_list[mx+1][my] == 0:
-            mx +=1
+        if fly == True or maze_list[mx+1][my] == 0:
+            mx += 1
         else:
             pass
+    
+    #リスタートできるようにする
+    if key == "r":
+        my, mx = 1, 1
+
+    #こうかとんが移動する
     canvas.coords("kokaton", mx*100+50, my*100+50)
     root.after(100, main_proc)
 
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("迷える工科とん")
-    
+
+    #キャンバスを作る
     canvas = tk.Canvas(root, width=1500, height=900, bg=("black"))
 
     maze_list = mm.make_maze(15, 9)
     mm.show_maze(canvas, maze_list)
 
     mx, my = 1, 1
-    image=tk.PhotoImage(file="fig/8.png")
+    #こうかとんのイメージを引っ張て来て貼る
+    image=tk.PhotoImage(file="fig/0.png")
     canvas.create_image(mx*100+50, my*100+50,
                         image=image,
-                        tag = "kokaton") 
+                        tag = "kokaton")
     canvas.pack()
 
     #ボタンを押したときの挙動
