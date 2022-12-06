@@ -3,7 +3,11 @@ import tkinter.messagebox as tkm
 import maze_maker as mm
 
 def key_press(event):
-    global key
+    global key, jid
+    key = event.keysym
+    if jid is not None:
+        root.after_cancel(jid)
+        jid = None
     key = event.keysym
 
 
@@ -12,36 +16,28 @@ def key_release(event):
     key = ""
 
 def main_proc():
-    global mx, my, image
+    global mx, my, image, tmr, count
     fly = False
 
-    if key == "space":
-        if fly == True:
-            fly = False
-            image = tk.PhotoImage(file="fig/0.png")
-        else:
-            fly = True
-            image = tk.PhotoImage(file="fig/3.png")
-
     #壁の上に乗れないようにする
-    if key == "Up":
+    if key == "w" or key == "Up":
         if fly == True or maze_list[mx][my-1] == 0:
             my -= 1
         else:
             pass
 
-    if key == "Down":
+    if key == "s" or key == "Down":
         if fly == True or maze_list[mx][my+1] == 0:
             my += 1
         else:
             pass
 
-    if key == "Left":
+    if key == "a" or key == "Left":
         if fly == True or maze_list[mx-1][my] == 0:
             mx -= 1
         else:
             pass
-    if key == "Right":
+    if key == "d" or key == "Right":
         if fly == True or maze_list[mx+1][my] == 0:
             mx += 1
         else:
@@ -55,9 +51,49 @@ def main_proc():
     canvas.coords("kokaton", mx*100+50, my*100+50)
     root.after(100, main_proc)
 
+    #時間を図る
+    global jid
+    if jid is not None:
+        root.after_cancel(jid)
+        jid = None
+
+#右クリックでこうかとんが飛ぶ
+def kokaton_fly(event):
+    global fly
+    im = ""
+    if fly == True:
+        fly = False
+        canvas.delete("kokaton")
+        im=tk.PhotoImage(file="fig/0.png")
+        canvas.create_image(mx*100+50, my*100+50,
+                            image=im,
+                            tag = "kokaton")
+
+    else:
+        fly = True
+        canvas.delete("kokaton")
+        im=tk.PhotoImage(file="fig/3.png")
+        canvas.create_image(mx*100+50, my*100+50,
+                            image=im,
+                            tag = "kokaton")
+    canvas.pack()
+
+
+
 if __name__ == "__main__":
+    fly = False
     root = tk.Tk()
     root.title("迷える工科とん")
+
+    #時間を表示する
+    label = tk.Label(root, text = "-", font=("", 80))
+    label.pack()
+
+    tmr = 0
+    jid = None
+
+    #count_up()
+    root.bind("<KeyPress>", key_press)
 
     #キャンバスを作る
     canvas = tk.Canvas(root, width=1500, height=900, bg=("black"))
@@ -67,11 +103,15 @@ if __name__ == "__main__":
 
     mx, my = 1, 1
     #こうかとんのイメージを引っ張て来て貼る
+    root.bind("<3>", kokaton_fly)
     image=tk.PhotoImage(file="fig/0.png")
     canvas.create_image(mx*100+50, my*100+50,
                         image=image,
                         tag = "kokaton")
     canvas.pack()
+
+    pause = False
+
 
     #ボタンを押したときの挙動
     key = ""
