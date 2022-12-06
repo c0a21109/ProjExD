@@ -16,8 +16,7 @@ def key_release(event):
     key = ""
 
 def main_proc():
-    global mx, my, image, tmr, count
-    fly = False
+    global mx, my, image, tmr, fly
 
     #壁の上に乗れないようにする
     if key == "w" or key == "Up":
@@ -57,6 +56,23 @@ def main_proc():
         root.after_cancel(jid)
         jid = None
 
+    if key == "f":
+
+        if fly == True:
+            fly = False
+            canvas.delete("kokaton")
+            canvas.create_image(mx*100+50, my*100+50,
+                                image=image,
+                                tag = "kokaton")
+
+        else:
+            fly = True
+            canvas.delete("kokaton")
+            canvas.create_image(mx*100+50, my*100+50,
+                                image=toberubuta,
+                                tag = "kokaton")
+        
+""""
 #右クリックでこうかとんが飛ぶ
 def kokaton_fly(event):
     global fly
@@ -77,13 +93,14 @@ def kokaton_fly(event):
                             image=im,
                             tag = "kokaton")
     canvas.pack()
+"""
 
 
 
 if __name__ == "__main__":
     fly = False
     root = tk.Tk()
-    root.title("迷える工科とん")
+    root.title("迷えるこうかとん")
 
     #時間を表示する
     label = tk.Label(root, text = "-", font=("", 80))
@@ -103,8 +120,9 @@ if __name__ == "__main__":
 
     mx, my = 1, 1
     #こうかとんのイメージを引っ張て来て貼る
-    root.bind("<3>", kokaton_fly)
-    image=tk.PhotoImage(file="fig/0.png")
+    #root.bind("<3>", kokaton_fly)
+    image=tk.PhotoImage(file="fig/0.png")#通常時のこうかとん
+    toberubuta=tk.PhotoImage(file="fig/3.png")#飛んでる時のこうかとん
     canvas.create_image(mx*100+50, my*100+50,
                         image=image,
                         tag = "kokaton")
@@ -118,5 +136,4 @@ if __name__ == "__main__":
     root.bind("<KeyPress>", key_press)
     root.bind("<KeyRelease>", key_release)
     main_proc()
-    print(key)
     root.mainloop()
