@@ -1,7 +1,6 @@
 import pygame as pg
 import sys
 import random
-import time
 
 def check_bound(obj_rect, scr_rect): #画面外チェック
     #第１引数：〇〇_rect
@@ -17,18 +16,18 @@ def main():
     count = 0 #今何フレーム目？
     clock =pg.time.Clock()
     pause = False
-    #追加される玉の速度の初期設定
-    vx1, vy1 = 1, 1 
-    vx2, vy2 = 0, 0
-    vx3, vy3 = 0, 0
-    vx4, vy4 = 0, 0
+    #追加される爆弾の速度の初期設定
+    vx1, vy1 = 1, 1 #1個目
+    vx2, vy2 = 0, 0 #2個目
+    vx3, vy3 = 0, 0 #3個目
+    vx4, vy4 = 0, 0 #4個目
 
     LIFE = 3 #工科豚のライフ
     dismith = 0 #被弾後の無敵時間
 
-    LV2 = False #2つ目の玉が動き出す
-    LV3 = False #3つ目の球が動き出す
-    LV4 = False #4つ目の球が動きだす
+    LV2 = False #2つ目の爆弾が動き出す
+    LV3 = False #3つ目の爆弾が動き出す
+    LV4 = False #4つ目の爆弾が動きだす
     # 練習１
     pg.display.set_caption("逃げろこうかとん")
     scrn_sfc = pg.display.set_mode((1600, 900))
@@ -63,7 +62,7 @@ def main():
     bomb2_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bomb2_sfc, (255, 0, 0), (15, 15), 15) 
     bomb2_rct = bomb2_sfc.get_rect()
-    bomb2_rct.centerx = 51 #2個目の玉の初期位置
+    bomb2_rct.centerx = 51 #2個目の爆弾の初期位置
     bomb2_rct.centery = 51
 
     #3つ目の爆弾
@@ -71,7 +70,7 @@ def main():
     bomb3_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bomb3_sfc, (255, 0, 0), (20, 20), 20) 
     bomb3_rct = bomb3_sfc.get_rect()
-    bomb3_rct.centerx = 51 #3個目の玉の初期位置
+    bomb3_rct.centerx = 51 #3個目の爆弾の初期位置
     bomb3_rct.centery = 51
 
     #4つ目の爆弾
@@ -79,23 +78,23 @@ def main():
     bomb4_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bomb4_sfc, (255, 0, 0), (25, 25), 25) 
     bomb4_rct = bomb4_sfc.get_rect()
-    bomb4_rct.centerx = 51 #4個目の玉の初期位置
+    bomb4_rct.centerx = 51 #4個目の爆弾の初期位置
     bomb4_rct.centery = 51
 
     #ハートを描画
-    #1コメ
+    #1個目
     heart1_sfc = pg.image.load("fig/heart.png")
     heart1_sfc = pg.transform.rotozoom(heart1_sfc, 0, 0.1)
     heart1_rct = heart1_sfc.get_rect()
     heart1_rct.center = 1560, 40
     scrn_sfc.blit(heart1_sfc, heart1_rct)
-    #2コメ
+    #2個目
     heart2_sfc = pg.image.load("fig/heart.png")
     heart2_sfc = pg.transform.rotozoom(heart2_sfc, 0, 0.1)
     heart2_rct = heart2_sfc.get_rect()
     heart2_rct.center = 1520, 40
     scrn_sfc.blit(heart2_sfc, heart2_rct)
-    #3コメ
+    #3個目
     heart3_sfc = pg.image.load("fig/heart.png")
     heart3_sfc = pg.transform.rotozoom(heart3_sfc, 0, 0.1)
     heart3_rct = heart3_sfc.get_rect()
@@ -115,23 +114,15 @@ def main():
 
         #練習４ 矢印キーだけではなく，wasdでも動かせる
         key_dict = pg.key.get_pressed()
-        if key_dict[pg.K_UP] or key_dict[pg.K_w]:
+        if (key_dict[pg.K_UP] or key_dict[pg.K_w])and tori_rct.top-1 > scrn_rct.top:
             tori_rct.centery -= 1
-        if key_dict[pg.K_DOWN] or key_dict[pg.K_s]:
+        if (key_dict[pg.K_DOWN] or key_dict[pg.K_s])and tori_rct.bottom+1 < scrn_rct.bottom:
             tori_rct.centery += 1
-        if key_dict[pg.K_LEFT] or key_dict[pg.K_a]:
+        if (key_dict[pg.K_LEFT] or key_dict[pg.K_a])and tori_rct.left-1 > scrn_rct.left:
             tori_rct.centerx -= 1
-        if key_dict[pg.K_RIGHT] or key_dict[pg.K_d]:
+        if (key_dict[pg.K_RIGHT] or key_dict[pg.K_d])and tori_rct.right+1  < scrn_rct.right:
             tori_rct.centerx += 1
-        if check_bound(tori_rct, scrn_rct) != (1, 1) :
-            if key_dict[pg.K_UP] or key_dict[pg.K_w]:
-                tori_rct.centery += 1
-            if key_dict[pg.K_DOWN] or key_dict[pg.K_s]:
-                tori_rct.centery -= 1
-            if key_dict[pg.K_LEFT] or key_dict[pg.K_a]:
-                tori_rct.centerx += 1
-            if key_dict[pg.K_RIGHT] or key_dict[pg.K_d]:
-                tori_rct.centerx -= 1
+
         scrn_sfc.blit(tori_sfc, tori_rct) #座標を更新したら貼り付ける
 
         #爆弾4つの設定
@@ -181,7 +172,7 @@ def main():
                 LIFE -= 1
                 dismith = count + 1000
 
-        #時間経過で次の玉が出てくる。
+        #時間経過で次の爆弾が出てくる。
         if count == 5000 and LV2 == False:
             LV2 = True
             vx2 = 1
@@ -220,7 +211,6 @@ def main():
 
 
 if __name__ == "__main__":
-    vx, vy = 1, 1
     pg.init()
     main()
     pg.quit()
