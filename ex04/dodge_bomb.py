@@ -30,7 +30,7 @@ def main():
     LV3 = False #3つ目の球が動き出す
     LV4 = False #4つ目の球が動きだす
     # 練習１
-    pg.display.set_caption("逃げろ工科豚")
+    pg.display.set_caption("逃げろこうかとん")
     scrn_sfc = pg.display.set_mode((1600, 900))
     scrn_rct = scrn_sfc.get_rect()
     pgbg_sfc = pg.image.load("fig/pg_bg.png")
@@ -58,7 +58,7 @@ def main():
     bomb1_rct.centerx = random.randint(11, scrn_rct.width-11)
     bomb1_rct.centery = random.randint(11, scrn_rct.height-11)
 
-    #２つ目の玉
+    #２つ目の爆弾
     bomb2_sfc = pg.Surface((30, 30)) #正方形のからのサーフェイス
     bomb2_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bomb2_sfc, (255, 0, 0), (15, 15), 15) 
@@ -66,7 +66,7 @@ def main():
     bomb2_rct.centerx = 51 #2個目の玉の初期位置
     bomb2_rct.centery = 51
 
-    #3つ目の玉
+    #3つ目の爆弾
     bomb3_sfc = pg.Surface((40, 40)) #正方形のからのサーフェイス
     bomb3_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bomb3_sfc, (255, 0, 0), (20, 20), 20) 
@@ -74,7 +74,7 @@ def main():
     bomb3_rct.centerx = 51 #3個目の玉の初期位置
     bomb3_rct.centery = 51
 
-    #4つ目の玉
+    #4つ目の爆弾
     bomb4_sfc = pg.Surface((50, 50)) #正方形のからのサーフェイス
     bomb4_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bomb4_sfc, (255, 0, 0), (25, 25), 25) 
@@ -83,18 +83,19 @@ def main():
     bomb4_rct.centery = 51
 
     #ハートを描画
+    #1コメ
     heart1_sfc = pg.image.load("fig/heart.png")
     heart1_sfc = pg.transform.rotozoom(heart1_sfc, 0, 0.1)
     heart1_rct = heart1_sfc.get_rect()
     heart1_rct.center = 1560, 40
     scrn_sfc.blit(heart1_sfc, heart1_rct)
-
+    #2コメ
     heart2_sfc = pg.image.load("fig/heart.png")
     heart2_sfc = pg.transform.rotozoom(heart2_sfc, 0, 0.1)
     heart2_rct = heart2_sfc.get_rect()
     heart2_rct.center = 1520, 40
     scrn_sfc.blit(heart2_sfc, heart2_rct)
-
+    #3コメ
     heart3_sfc = pg.image.load("fig/heart.png")
     heart3_sfc = pg.transform.rotozoom(heart3_sfc, 0, 0.1)
     heart3_rct = heart3_sfc.get_rect()
@@ -112,37 +113,34 @@ def main():
             if event.type == pg.QUIT:
                 return
 
-        #練習４
+        #練習４ 矢印キーだけではなく，wasdでも動かせる
         key_dict = pg.key.get_pressed()
-        if key_dict[pg.K_UP]:
+        if key_dict[pg.K_UP] or key_dict[pg.K_w]:
             tori_rct.centery -= 1
-        if key_dict[pg.K_DOWN]:
+        if key_dict[pg.K_DOWN] or key_dict[pg.K_s]:
             tori_rct.centery += 1
-        if key_dict[pg.K_LEFT]:
+        if key_dict[pg.K_LEFT] or key_dict[pg.K_a]:
             tori_rct.centerx -= 1
-        if key_dict[pg.K_RIGHT]:
+        if key_dict[pg.K_RIGHT] or key_dict[pg.K_d]:
             tori_rct.centerx += 1
         if check_bound(tori_rct, scrn_rct) != (1, 1) :
-            if key_dict[pg.K_UP]:
+            if key_dict[pg.K_UP] or key_dict[pg.K_w]:
                 tori_rct.centery += 1
-            if key_dict[pg.K_DOWN]:
+            if key_dict[pg.K_DOWN] or key_dict[pg.K_s]:
                 tori_rct.centery -= 1
-            if key_dict[pg.K_LEFT]:
+            if key_dict[pg.K_LEFT] or key_dict[pg.K_a]:
                 tori_rct.centerx += 1
-            if key_dict[pg.K_RIGHT]:
+            if key_dict[pg.K_RIGHT] or key_dict[pg.K_d]:
                 tori_rct.centerx -= 1
-
         scrn_sfc.blit(tori_sfc, tori_rct) #座標を更新したら貼り付ける
 
+        #爆弾4つの設定
+        #1
         bomb1_rct.move_ip(vx1, vy1)
         scrn_sfc.blit(bomb1_sfc, bomb1_rct)
         yoko,tate  = check_bound(bomb1_rct, scrn_rct)
         vx1 *= yoko
         vy1 *= tate
-        
-        
-
-        #練習８
         if tori_rct.colliderect(bomb1_rct):
             if dismith < count:
                 LIFE -= 1
@@ -150,43 +148,40 @@ def main():
             else:
                 pass
 
-        
+        #2
         bomb2_rct.move_ip(vx2, vy2)
         scrn_sfc.blit(bomb2_sfc, bomb2_rct)
         yoko,tate  = check_bound(bomb2_rct, scrn_rct)
         vx2 *= yoko
         vy2 *= tate
-        
         if tori_rct.colliderect(bomb2_rct):
             if dismith < count:
                 LIFE -= 1
                 dismith = count + 1000
             else:
                 pass
-
+        #3
         bomb3_rct.move_ip(vx3, vy3)
         scrn_sfc.blit(bomb3_sfc, bomb3_rct)
         yoko,tate  = check_bound(bomb3_rct, scrn_rct)
         vx3 *= yoko
         vy3 *= tate
-        
         if tori_rct.colliderect(bomb3_rct):
             if dismith < count:
                 LIFE -= 1
                 dismith = count + 1000
-
+        #4
         bomb4_rct.move_ip(vx4, vy4)
         scrn_sfc.blit(bomb4_sfc, bomb4_rct)
         yoko,tate  = check_bound(bomb4_rct, scrn_rct)
         vx4 *= yoko
         vy4 *= tate
-        
         if tori_rct.colliderect(bomb4_rct):
             if dismith < count:
                 LIFE -= 1
                 dismith = count + 1000
 
-
+        #時間経過で次の玉が出てくる。
         if count == 5000 and LV2 == False:
             LV2 = True
             vx2 = 1
@@ -195,13 +190,14 @@ def main():
         if count == 10000 and LV3 == False:
             LV3 = True
             vx3 = -1
-            vy3 = 1
+            vy3 = 2
 
         if count == 15000 and LV4 == False:
             LV4 = True
-            vx4 = 1
+            vx4 = 2
             vy4 = -1
         
+        #LIFEの描画
         if LIFE == 3:
             scrn_sfc.blit(heart3_sfc, heart3_rct)
         if LIFE >= 2:
