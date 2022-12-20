@@ -95,7 +95,6 @@ class Dismiss(Bird): #dismiss(無敵時間)の時のクラス
         self.rct.center = xy
         
 
-
 class Soulorb: # ソウルオーブのクラス
     def __init__(self, xy):
         self.sfc = pg.Surface((20, 20)) 
@@ -108,14 +107,7 @@ class Soulorb: # ソウルオーブのクラス
         scr.sfc.blit(self.sfc, self.rct)
         
 
-
-
 def check_bound(obj_rct, scr_rct):
-    """
-    第1引数：こうかとんrectまたは爆弾rect
-    第2引数：スクリーンrect
-    範囲内：+1／範囲外：-1
-    """
     yoko, tate = +1, +1
     if obj_rct.left < scr_rct.left or scr_rct.right < obj_rct.right:
         yoko = -1
@@ -123,7 +115,6 @@ def check_bound(obj_rct, scr_rct):
         tate = -1
     return yoko, tate
 
-    font = pg.font.Font(None, 30)
 
 def main():
     clock =pg.time.Clock()
@@ -205,8 +196,6 @@ def main():
                     dismiss = True
                     dismiss_limit = pg.time.get_ticks() + 3000
                     soulorb = False
-
-
         
         if life >= 1:
             heart1.blit(scr)
@@ -215,7 +204,6 @@ def main():
         if life >= 3:
             heart3.blit(scr)
             
-
         pg.display.update()
         clock.tick(1000)
 
