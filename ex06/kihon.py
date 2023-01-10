@@ -19,14 +19,25 @@ class Screen:
                         self.sfc, (255, 255, 255), (self.rct.centerx, 0),
                         (self.rct.centerx, 900), 10
                     )
-    
-    # 以下追加機能
         phase = clock//1000
         font = pg.font.Font(None, 55)
-        text = font.render(F"{clock//1000}", True, (0,0,0))   # 描画する文字列の設定
-        self.sfc.blit(text, [750, 55])# 文字列の表示位置
-        
+        text1 = font.render(F"{phase%4}", True, (0,0,0))   # 描画する文字列の設定
+        self.sfc.blit(text1, [750, 55])# 文字列の表示位置
 
+    # 以下追加機能
+    """""
+        phase = clock//1000
+        font = pg.font.Font(None, 55)
+        if phase > phase/2:
+            text1 = font.render(F"{phase}", True, (0,0,0))   # 描画する文字列の設定
+            text2 = font.render("unko", True, (0,0,0))
+        else:
+            text1 = font.render(F"{phase}", True, (0,0,0))   # 描画する文字列の設定
+            text2 = font.render("hoge", True, (255,0,0))
+        self.sfc.blit(text1, [750, 55])# 文字列の表示位置
+        self.sfc.blit(text2, [750, 700] )
+    """""
+        
 """"" # 残骸
 class Bird1:
     key_delta = {
@@ -83,7 +94,7 @@ class Bird2:
 """""
 
 
-# 貰いました m(__)m
+# 各Playerのクラス。     貰いました m(__)m
 class Player:
     # キーと方向の対応付け辞書
     key_delta = [{
